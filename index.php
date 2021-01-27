@@ -27,7 +27,21 @@
         .wrapper {
             background-color: rgba(0, 0, 0, 0.6);
         }
-        
+        @media only screen and (min-width: 768px) {
+            input {
+                width: 20vw !important;
+            }
+        }
+        @media only screen and (max-width: 600px) {
+            input {
+                width: 55vw !important;
+            }
+        }
+        @media only screen and (min-width: 600px) {
+            input {
+                width: 20vw !important;
+            }
+        }
         
     </style>
 
@@ -84,7 +98,7 @@
                         <input type="email" id="email" class="validate" name="email" placeholder="Email">
                     </div>
                     <div class="">
-                        <input type="text" id="username" class="validate" name="username" placeholder="Username">
+                        <input type="text" id="username" class="validate" name="username" placeholder="Johnappier, No spacing!">
                     </div>
                     <div class="">
                         <input type="password" id="password" class="validate" name="password" placeholder="Password">

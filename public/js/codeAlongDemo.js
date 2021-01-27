@@ -35,8 +35,8 @@ $('#regForm').submit(function(e){
                     if(data == 1){
                         //inform of success
                         openForm();
-                        $('.fdBack').addClass('successToast');
-                        $('.fdBack').append('Registration Successful, Please Login!')
+                        $('.loginfdBack').addClass('successToast');
+                        $('.loginfdBack').append('Registration Successful, Please Login!')
                     }
                     else {
                         $('.fdBack').addClass('errorToast');

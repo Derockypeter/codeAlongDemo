@@ -86,7 +86,7 @@
     <script>
         const userId = <?=$_SESSION['id']?>;
 
-        localStorage.setItem('lastLoggedInTime', new Date());
+        
         let lastLoggedInTime = localStorage.getItem('lastLoggedInTime');
         
         $.ajax({
@@ -97,24 +97,29 @@
             success: function(data){
                 if(data) {
                     data[0].forEach(element => {
+                        let loop = 0;
 
-                        // data[1].forEach(elem => {
-                        //     // Split timestamp into [ Y, M, D, h, m, s ]
-                        //     var mySqlTime = (elem.created_at).split(/[- :]/);
-
-                        //     // Apply each element to the Date function
-                        //     var convMySQLTime = new Date(Date.UTC(mySqlTime[0], mySqlTime[1]-1, mySqlTime[2], mySqlTime[3], mySqlTime[4], mySqlTime[5]));
-                        //     console.log(convMySQLTime)
-                        //     if(convMySQLTime > lastLoggedInTime && elem.userIdFrom == element.id){
-                        //         console.log(elem.username, element.username, elem.message)
-                        //     }
-                        //     else {
-                        //         console.log('nothing')
-                        //     }
-                        // })
-                        var html = $("<div class='contact' id='" + element.id + "' onclick=getChatWithUser('"+element.id+"','"+element.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + element.username + "</h1></div></div>");
+                        data[1].forEach(elem => {
+                            // Split timestamp into [ Y, M, D, h, m, s ]
+                            var mySqlTime = (elem.created_at).split(/[- :]/);
+                            console.log(lastLoggedInTime)
+                            // Apply each element to the Date function
+                            var convMySQLTime = new Date(Date.UTC(mySqlTime[0], mySqlTime[1]-1, mySqlTime[2], mySqlTime[3], mySqlTime[4], mySqlTime[5]));
+                            let mysqlDt = new Date(convMySQLTime);
+                            let lastLogin = new Date(lastLoggedInTime);
+                            if(mysqlDt.getTime() > lastLogin.getTime() && elem.userIdFrom == element.id && elem.username === element.username){
+                                loop += 1;
+                                // console.log(elem.username, element.username, elem.message, convMySQLTime, lastLoggedInTime)
+                            }
+                        })
+                        if(loop == 0){
+                            var html = $("<div class='contact' data-messageCount='" + loop + "' id='" + element.id + "' onclick=getChatWithUser('"+element.id+"','"+element.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + element.username + "</h1></div>");
+                        }
+                        else {
+                            var html = $("<div class='contact' data-messageCount='" + loop + "' id='" + element.id + "' onclick=getChatWithUser('"+element.id+"','"+element.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + element.username + "</h1></div><span class='badge'>" + loop + "</span></div></div>");
+                        }
                         $(".contact-list").prepend(html);
-                        
+                        console.log(loop)
                     });
                 }
             }
@@ -125,6 +130,9 @@
             $('#chatBox').removeClass('hide') // Chats remove hide prop
             $('.contact').removeClass("active-contact"); // Active contact
             $('#' + id).addClass("active-contact");
+
+            $(".chat-head img").attr("src", '../public/image/user-alt-512.webp');
+            $(".chat-name h1").text(name);
             chat.empty();
             
             $.ajax({
@@ -134,8 +142,6 @@
                 data: {'id': userId, 'userFromId': id, 'getChatDetails': true},
                 success: function(data){
                     if(data){
-                        $(".chat-head img").attr("src", '../public/image/user-alt-512.webp');
-                        $(".chat-name h1").text(name);
                         data.forEach(element => {
                             if(element.userIdTo == userId){
                                 $(".chat").append("<div class='chat-bubble you'><div class='your-mouth'></div><div class='content'>" + element.message + "</div><div class='time'>" + element.created_at + "</div></div>");
@@ -163,7 +169,6 @@
                             data: data,
                             success: function(data){
                                 if(data){
-                                    console.log(data)
                                     var frm = document.getElementsByName('message')[0];
                                     frm.value = null;
                                     data.forEach(element => {
@@ -191,6 +196,7 @@
                 }
             });
         });
+        localStorage.setItem('lastLoggedInTime', new Date());
     </script>
 </html>
 <?php

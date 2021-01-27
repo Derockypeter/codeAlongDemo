@@ -38,6 +38,7 @@
                 exit('This username is already being used');
             }
             $uName = $_POST['username'];
+            $uNameNoSpaces = str_replace(' ', '', $uName);
         } else {
             $error = 1;
         }
@@ -54,7 +55,7 @@
         } else {
             
             //Insert user data into DB
-            $res = $db->query('INSERT INTO users (fName, lName, username, email, password, created_at) VALUES ("'.$fName.'", "'.$lName.'", "'. $uName.'","'.$email.'","'.$pass.'", NOW())');
+            $res = $db->query('INSERT INTO users (fName, lName, username, email, password, created_at) VALUES ("'.$fName.'", "'.$lName.'", "'. $uNameNoSpaces.'","'.$email.'","'.$pass.'", NOW())');
              
             // if (mysqli_query($db, $res)) {
             //     echo "New record created successfully";
