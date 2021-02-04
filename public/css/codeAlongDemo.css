@@ -1,16 +1,23 @@
+body {
+    margin: 0;
+}
 .errorToast {
     background-color: rgb(235, 17, 17);
+    padding: 1vh;
     color: #ffff;
 }
 .successToast {
-    background-color: rgb(66, 6, 31);
+    background-color: rgb(10, 153, 34);
+    padding: 1vh;
     color: #ffff;
 }
-
+.rigthTxt {
+    float: right;
+}
 nav {
     text-align: center;
     padding: 20px;
-    background-color: rgb(214, 48, 76);
+    background-color: #e6007e;
     font-size: 2rem;
     
 }
@@ -71,7 +78,7 @@ input {
 footer {
     /* position: relative;
     top: 5vh; */
-    color: pink;
+    color:  #e6007e;
     font-weight: bold;
 }   
 
@@ -126,7 +133,8 @@ footer {
 .profile {
     width: 100%;
     height: 60px;
-    background: #eeeeee;
+    line-height: 60px;
+    background: #e6007e;
     border-right: 1px solid #dbdbdb;
     display: flex;
     justify-content: center;
@@ -140,9 +148,10 @@ footer {
 }
 
 .uName {
-    color: #777777;
-    margin-top: 30px;
+    color: #fff;
+    /* margin-top: 30px; */
     display: flex;
+    text-transform: uppercase;
 }
 
 .logout {
@@ -176,6 +185,7 @@ footer {
 
 .contact:hover, .new-message-contact:hover {
     background-color: #f5f5f5;
+    cursor: pointer;
 }
 
 /* .new-message-contact {
@@ -191,29 +201,31 @@ footer {
 }
 
 .contact-text {
+    width: 100%;
     height: 40px;
+    line-height: 40px;
     margin: auto 0;
     overflow: hidden;
 }
 
 .badge {
-    /* width: 55px; */
-    color: rgba(17, 15, 15, 0.4);
-    font-size: 0.8em;
-    display: flex;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    color: rgba(245, 239, 239, 1);
+    /* font-size: 0.8em; */
+    /* display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-between; */
     padding: .05rem .4rem .15rem;
-    border-bottom: 1px solid #eeeeee;
-    margin-bottom: 50px;
-    background-color:#e1f7c4;
-    border-radius: 3rem;
+    /* border-bottom: 1px solid #eeeeee; */
+    margin: 1vh 1.5vh 0 0;
+    background-color:#5fbe64;
+    border-radius: 50%;
     text-align: center;
 
     font-size: .7rem;
     font-weight: 500;
-    
-    line-height: inherit;
 }
 
 .new-message {
@@ -239,7 +251,8 @@ footer {
 .freshLoad {
     background-color: #e5ddd5;
     height: 100%;
-    padding-top: 40%;
+    line-height: 100vh;
+    /* padding-top: 40%; */
     text-align: center;
     font-size: 2rem;
     color: rgb(100, 98, 99);
@@ -271,7 +284,7 @@ footer {
 
 .chat {
     background-color: #e5ddd5;
-    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1089577/background.png);
+    background-image: url(../image/background.png);
     width: 100%;
     padding: 0px 10%;
     padding-top: 7px;
@@ -376,12 +389,12 @@ input:focus, .btn:focus {
 
 /* ------ SCROLLBAR ------ */
 
-body::-webkit-scrollbar, .contact-list::-webkit-scrollbar, .chat::-webkit-scrollbar, .information::-webkit-scrollbar {
+#regForm::-webkit-scrollbar, body::-webkit-scrollbar, .contact-list::-webkit-scrollbar, .chat::-webkit-scrollbar, .information::-webkit-scrollbar {
     width: 0.4em;
     height: 0.4em;
 }
 
-body::-webkit-scrollbar-thumb, .contact-list::-webkit-scrollbar-thumb, .chat::-webkit-scrollbar-thumb, .information::-webkit-scrollbar-thumb {
+#regForm::-webkit-scrollbar, body::-webkit-scrollbar-thumb, .contact-list::-webkit-scrollbar-thumb, .chat::-webkit-scrollbar-thumb, .information::-webkit-scrollbar-thumb {
     background-color: rgba(0,0,0,0.2);
 }
 

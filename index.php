@@ -19,7 +19,7 @@
             height: 100%;
         }
         body {
-            background-image: url('public/image/loginBkgrd.png');
+            background-image: url('public/image/loginBkgrd.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -52,7 +52,7 @@
     <div class="row">
         <nav>
             <div class="nav-wrapper pink">
-                <a href="#" class="brand-logo center">Lete'Chat</a>
+                <a href="#" class="brand-logo center">Lets'Chat</a>
             </div>
         </nav>
         <div class="flexedForm">
@@ -68,7 +68,7 @@
                             <input id="pass" name="loginPassword" placeholder="Password" type="password" required class="validate">
                         </div>
                         <div class="col s12">
-                            <p class="right">Not Yet Registered?
+                            <p class="center-align">Not Yet Registered?
                                 <a href="#" onclick="openForm()"><b>Register</b></a>
                             </p>
                         </div>
@@ -107,7 +107,7 @@
                         <input type="password" id="confirm_password" class="validate" name="confirm_password" placeholder="Password Confirmation">
                     </div>
                     <div class="">
-                        <p class="right">Already Registered?
+                        <p class="center-align">Already Registered?
                             <a href="#" onclick="openForm()"><b>Login</b></a>
                         </p>
                     </div>
@@ -123,7 +123,7 @@
            
     </div>
     <footer class="center-align">
-        <small>&copy; Copyright 2021. Lete'chat</small>
+        <small>&copy; Copyright 2021. Lets'chat</small>
     </footer>
     <script src="public/js/jquery-3.5.1.min.js"></script>
     <script src="public/js/codeAlongDemo.js"></script>

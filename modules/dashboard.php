@@ -45,10 +45,7 @@
                     <div class="uName">
                         <p>
                             <?=$_SESSION['username']?>
-                            <form>
-                                <a href="#" class="logout">Logout</a>
-                            </form>
-                            
+                            <a href="#" class="logout">Logout</a>                            
                         </p>
                     </div>
                     
@@ -57,8 +54,8 @@
             </div>
             <div id="chatBoxFresh">
                 <div class="freshLoad">
-                    <p>Welcome to Lete'Chat</p>
-                    <p>Lete'chat <?=$_SESSION['username']?></p>
+                    <!-- <p>Welcome to Lets'Chat</p> -->
+                    <p>Lets'chat <?=$_SESSION['username']?></p>
                 </div>
                
             </div>
@@ -83,48 +80,56 @@
     </body>
 
     <script src="../public/js/jquery-3.5.1.min.js"></script>
+    <script src="../public/js/moment.min.js"></script>
     <script>
         const userId = <?=$_SESSION['id']?>;
-
         
-        let lastLoggedInTime = localStorage.getItem('lastLoggedInTime');
-        
+        // TODO: on page load, set localstsorage to datetime of data retrieved......lastDataRetrieved
+            // every sec
+                //get data from db
+                //loop thru data
+                    //if thisData.created_at isAfter lastDataRetrieved
+                        //Update data
+                        //if new data is for presently viewing user 
+                            //update cahat
+                        //else
+                            // show badge
         $.ajax({
             type: 'POST',
             url: '../gateway/chatController.php',
-            dataType: 'json',
+            // dataType: 'json',
             data: {'id': userId, 'getUserChatFriends': true},
             success: function(data){
-                if(data) {
-                    data[0].forEach(element => {
-                        let loop = 0;
-
-                        data[1].forEach(elem => {
-                            // Split timestamp into [ Y, M, D, h, m, s ]
-                            var mySqlTime = (elem.created_at).split(/[- :]/);
-                            console.log(lastLoggedInTime)
-                            // Apply each element to the Date function
-                            var convMySQLTime = new Date(Date.UTC(mySqlTime[0], mySqlTime[1]-1, mySqlTime[2], mySqlTime[3], mySqlTime[4], mySqlTime[5]));
-                            let mysqlDt = new Date(convMySQLTime);
-                            let lastLogin = new Date(lastLoggedInTime);
-                            if(mysqlDt.getTime() > lastLogin.getTime() && elem.userIdFrom == element.id && elem.username === element.username){
-                                loop += 1;
-                                // console.log(elem.username, element.username, elem.message, convMySQLTime, lastLoggedInTime)
+                if(data != 404) {
+                    data = JSON.parse(data);
+                    
+                    data.forEach(el => {
+                        let lastThisUserChatRead = moment(new Date(localStorage.getItem(el.username))).format("DD-MM-YYYY, h:mm:ss");
+                        el['unread'] = 0;
+                        el.chats.forEach(chat => {
+                            let chatTime = moment(new Date(chat.created_at)).format("DD-MM-YYYY, h:mm:ss");
+                            if(moment(chatTime).isAfter(lastThisUserChatRead)){
+                                el['unread'] += 1;
                             }
-                        })
-                        if(loop == 0){
-                            var html = $("<div class='contact' data-messageCount='" + loop + "' id='" + element.id + "' onclick=getChatWithUser('"+element.id+"','"+element.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + element.username + "</h1></div>");
-                        }
-                        else {
-                            var html = $("<div class='contact' data-messageCount='" + loop + "' id='" + element.id + "' onclick=getChatWithUser('"+element.id+"','"+element.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + element.username + "</h1></div><span class='badge'>" + loop + "</span></div></div>");
+                        });
+                        
+                        if(el['unread'] == 0){
+                            var html = $("<div class='contact' data-messageCount='" + el['unread'] + "' id='" + el.id + "' onclick=getChatWithUser('"+el.id+"','"+el.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + el.username + "</h1></div>");
+                        } else if(el['unread'] > 0) {
+                            var html = $("<div class='contact' data-messageCount='" + el['unread'] + "' id='" + el.id + "' onclick=getChatWithUser('"+el.id+"','"+el.username+"')><img src='../public/image/user-alt-512.webp'><div class='contact-preview'><div class='contact-text'><h1 class='font-name'>" + el.username + " <span class='rigthTxt badge'>" + el['unread'] + "</span></h1></div></div></div>");
                         }
                         $(".contact-list").prepend(html);
-                        console.log(loop)
                     });
+                } else {
+                    console.log('here');
+                    // Inform user that no user exists
                 }
             }
         });
         function getChatWithUser(id, name){
+            $('#'+id+' h1 span').hide();
+
+            localStorage.setItem(name, new Date());
             let chat = $('.chat')
             $('#chatBoxFresh').addClass('hide') // Welcome Page hide
             $('#chatBox').removeClass('hide') // Chats remove hide prop
@@ -196,7 +201,7 @@
                 }
             });
         });
-        localStorage.setItem('lastLoggedInTime', new Date());
+        
     </script>
 </html>
 <?php

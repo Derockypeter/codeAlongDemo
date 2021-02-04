@@ -8,26 +8,30 @@
         $res = $db->query("SELECT `username`, `id`, `fName`, `lName` FROM `users` WHERE `id` != '".$userId."'");
         $parentArray = array();
         $numRows = $res->num_rows;
+
         if($numRows > 0){ 
-            $json = array();
+            $userData = [];
             while($users = $res->fetch_assoc()){
-                $json[] = $users;
-            }
-            $resForChats = $db->query("SELECT DISTINCT username, userIdFrom, userIdTo, message, chats.created_at, chats.id AS chatId, users.id AS userId FROM chats, users WHERE users.id != '".$userId."' AND (chats.userIdFrom = '".$userId."'  OR chats.userIdTo = '".$userId."')");
-            $numRowForChats = $resForChats->num_rows;
-            if($numRows > 0){ 
-                $jsonChats = array();
-                while($resChats = $resForChats->fetch_assoc()){
-                    $jsonChats[] = $resChats;
+                $tmp = [];
+                $userId = $users['id'];
+                $tmp['id'] = $userId;
+                $tmp['username'] = $users['username'];
+                $resForChats = $db->query("SELECT chats.* FROM chats WHERE chats.userIdFrom = ".$userId." OR chats.userIdTo = ".$userId);
+                $chatNumRows = $resForChats->num_rows;
+                $tmp['chats'] = [];
+                if($chatNumRows > 0) {
+                    while($userChats = $resForChats->fetch_assoc()){
+                        $tmp['chats'][]= $userChats;
+                        // array_push($tmp['chats'], $userChats);
+                    }
                 }
+                $userData[] = $tmp;
+                // array_push($userData, $tmp);
             }
             
-            header('Content-Type: application/json');
-            array_push($parentArray, $json, $jsonChats);
-            echo json_encode($parentArray);
-        }
-        else {
-            echo 'No user is yet registered! Please invite your friends to chat with them!';
+            echo json_encode($userData);
+        } else {
+            echo 404;
         }
     }
     if(isset($_POST['getChatDetails'])){
